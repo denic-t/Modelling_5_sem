@@ -6,7 +6,7 @@ import numpy as np
 from uir1 import plots
 from uir1.distribution import hypoexp_generate, hypoexp_params
 from uir1.stats import autocorrelation, characteristics, pearson
-from uir1.tables import form_acf, form_deviations, form_values
+from uir1.tables import form_acf, form_acf_given, form_deviations, form_values
 
 ROOT = Path(__file__).resolve().parent
 DATA = ROOT.parent / "210_variant.txt"
@@ -18,10 +18,12 @@ SEED = 42
 
 
 def load(path):
+    """Читает файл варианта, десятичная запятая заменяется на точку."""
     return np.array([float(s.replace(",", ".")) for s in path.read_text(encoding="utf-8").split()])
 
 
 def main():
+    """Выполняет всю работу: статистика, аппроксимация, генерация, таблицы, графики."""
     figs, tabs = REPORT / "figures", REPORT / "tables"
     for d in (figs, tabs, OUTPUT):
         d.mkdir(parents=True, exist_ok=True)
@@ -44,6 +46,7 @@ def main():
         "form1_dev": form_deviations(SIZES, given, {n: ref for n in SIZES}),
         "form2": form_values(SIZES, gen),
         "form2_dev": form_deviations(SIZES, gen, given),
+        "form3_given": form_acf_given(acf_x),
         "form3": form_acf(acf_x, acf_y),
     }
     for name, tex in tables.items():

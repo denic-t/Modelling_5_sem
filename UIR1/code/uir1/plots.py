@@ -8,6 +8,7 @@ from .distribution import hypoexp_pdf
 
 
 def _save(fig, ax, title, path):
+    """Добавляет заголовок и сетку, сохраняет рисунок в PNG и закрывает его."""
     ax.set_title(title)
     ax.grid(alpha=0.3)
     fig.tight_layout()
@@ -16,6 +17,7 @@ def _save(fig, ax, title, path):
 
 
 def sequence(x, path):
+    """График значений исходной ЧП."""
     fig, ax = plt.subplots(figsize=(10, 4))
     ax.plot(np.arange(1, len(x) + 1), x, lw=1)
     ax.set_xlabel("Номер наблюдения")
@@ -24,6 +26,7 @@ def sequence(x, path):
 
 
 def acf(series, title, path):
+    """Коэффициенты автокорреляции по сдвигам для одной или нескольких ЧП."""
     fig, ax = plt.subplots(figsize=(8, 4))
     for (label, values), marker in zip(series.items(), "os"):
         ax.plot(range(1, len(values) + 1), values, marker=marker, label=label)
@@ -37,6 +40,7 @@ def acf(series, title, path):
 
 
 def histogram(x, bins, path):
+    """Гистограмма частот исходной ЧП."""
     fig, ax = plt.subplots(figsize=(8, 4))
     ax.hist(x, bins=bins, edgecolor="black", alpha=0.75)
     ax.set_xlabel("Значение")
@@ -45,6 +49,7 @@ def histogram(x, bins, path):
 
 
 def density(x, bins, t1, t2, path):
+    """Нормированная гистограмма исходной ЧП и плотность гипоэкспоненциального закона."""
     grid = np.linspace(0, bins[-1], 1000)
     fig, ax = plt.subplots(figsize=(8, 4))
     ax.hist(x, bins=bins, density=True, edgecolor="black", alpha=0.6, label="Исходная ЧП")
@@ -56,6 +61,7 @@ def density(x, bins, t1, t2, path):
 
 
 def compare_sequences(x, y, path):
+    """Исходная и сгенерированная ЧП на одном графике."""
     idx = np.arange(1, len(x) + 1)
     fig, ax = plt.subplots(figsize=(10, 4))
     ax.plot(idx, x, lw=1, label="Исходная")
@@ -67,6 +73,7 @@ def compare_sequences(x, y, path):
 
 
 def compare_histograms(x, y, bins, path):
+    """Наложенные нормированные гистограммы обеих ЧП."""
     fig, ax = plt.subplots(figsize=(8, 4))
     ax.hist(x, bins=bins, density=True, alpha=0.5, label="Исходная")
     ax.hist(y, bins=bins, density=True, alpha=0.5, label="Сгенерированная")
